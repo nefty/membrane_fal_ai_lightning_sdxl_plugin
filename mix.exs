@@ -1,25 +1,25 @@
-defmodule Membrane.Template.Mixfile do
+defmodule Membrane.FalSDXL.Mixfile do
   use Mix.Project
 
   @version "0.1.0"
-  @github_url "https://github.com/membraneframework/membrane_template_plugin"
+  @github_url "https://github.com/nefty/membrane_fal_ai_lightning_sdxl_plugin"
 
   def project do
     [
-      app: :membrane_template_plugin,
+      app: :membrane_fal_ai_lightning_sdxl_plugin,
       version: @version,
-      elixir: "~> 1.13",
+      elixir: "~> 1.18",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       dialyzer: dialyzer(),
 
       # hex
-      description: "Template Plugin for Membrane Framework",
+      description: "Membrane plugin to transform video with fast Stable Diffusion XL via Fal.ai ",
       package: package(),
 
       # docs
-      name: "Membrane Template plugin",
+      name: "Membrane Fal.ai Lightning SDXL Plugin",
       source_url: @github_url,
       docs: docs(),
       homepage_url: "https://membrane.stream"
@@ -28,7 +28,7 @@ defmodule Membrane.Template.Mixfile do
 
   def application do
     [
-      extra_applications: []
+      extra_applications: [:logger]
     ]
   end
 
@@ -40,7 +40,13 @@ defmodule Membrane.Template.Mixfile do
       {:membrane_core, "~> 1.0"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:dialyxir, ">= 0.0.0", only: :dev, runtime: false},
-      {:credo, ">= 0.0.0", only: :dev, runtime: false}
+      {:credo, ">= 1.7.11", only: :dev, runtime: false},
+      {:req, "~> 0.5.6"},
+      {:jason, "~> 1.2"},
+      {:websockex, "~> 0.4.3"},
+      {:msgpax, "~> 2.3"},
+      {:membrane_raw_video_format, "~> 0.4.1"},
+      {:turbojpeg, github: "gBillal/elixir-turbojpeg", branch: "upgrade-deps"}
     ]
   end
 
@@ -59,7 +65,7 @@ defmodule Membrane.Template.Mixfile do
 
   defp package do
     [
-      maintainers: ["Membrane Team"],
+      maintainers: ["Brian Eft"],
       licenses: ["Apache-2.0"],
       links: %{
         "GitHub" => @github_url,
@@ -74,7 +80,7 @@ defmodule Membrane.Template.Mixfile do
       extras: ["README.md", "LICENSE"],
       formatters: ["html"],
       source_ref: "v#{@version}",
-      nest_modules_by_prefix: [Membrane.Template]
+      nest_modules_by_prefix: [Membrane.FalSDXL]
     ]
   end
 end
