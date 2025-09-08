@@ -61,6 +61,7 @@ defmodule LiveView.MixProject do
       {:bandit, "~> 1.5"},
       {:membrane_webrtc_plugin, "~> 0.25.3"},
       {:membrane_vpx_plugin, "~> 0.3.0"},
+      {:membrane_ffmpeg_swscale_plugin, "~> 0.16.2"},
       {:membrane_fal_ai_lightning_sdxl_plugin, path: "../.."}
     ]
   end

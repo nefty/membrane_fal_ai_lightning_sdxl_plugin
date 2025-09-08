@@ -10,6 +10,11 @@ defmodule LiveView.Pipeline do
       })
       |> via_out(:output, options: [kind: :video])
       |> child(Membrane.VP8.Decoder)
+      |> child(:converter, %Membrane.FFmpeg.SWScale.Converter{
+        output_height: 512,
+        output_width: 512,
+        format: :I420
+      })
       |> child(%Membrane.FalSDXL{api_key: opts[:api_key]})
       |> child(%Membrane.VP8.Encoder{g_lag_in_frames: 0})
       |> via_in(:input, options: [kind: :video])
