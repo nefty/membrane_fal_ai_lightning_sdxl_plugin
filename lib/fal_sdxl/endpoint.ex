@@ -55,10 +55,10 @@ defmodule Membrane.FalSDXL.Endpoint do
     state = %State{
       client: client,
       generation_params: %GenerationParams{
-        prompt: "an elf with pointy ears and a red hat",
-        model_name: "stabilityai/sdxl-turbo",
+        prompt: "an elf with pointy ears wearing a green robe and hat, torch lit dungeon background, cinematic HD",
+        model_name: "runwayml/stable-diffusion-v1-5",
         strength: 0.4,
-        guidance_scale: 0.5
+        guidance_scale: 1.0
       },
       processing?: false
     }
