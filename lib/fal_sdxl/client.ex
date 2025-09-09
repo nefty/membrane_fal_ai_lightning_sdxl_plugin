@@ -74,7 +74,7 @@ defmodule Membrane.FalSDXL.Client do
   @spec send_image(
           atom() | pid() | {:global, any()} | {:via, atom(), any()},
           binary(),
-          Membrane.FalSDXL.GenerationParams.t()
+          %GenerationParams{}
         ) :: :ok
   def send_image(client, image_binary, %GenerationParams{} = params) do
     data_uri = encode_binary_image(image_binary)
@@ -84,7 +84,7 @@ defmodule Membrane.FalSDXL.Client do
 
   @spec send_message(
           atom() | pid() | {:global, any()} | {:via, atom(), any()},
-          Membrane.FalSDXL.GenerationParams.t()
+          %GenerationParams{}
         ) :: :ok
   def send_message(client, %GenerationParams{} = params) do
     send_message(client, Map.from_struct(params))

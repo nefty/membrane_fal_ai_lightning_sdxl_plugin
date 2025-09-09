@@ -5,17 +5,16 @@ defmodule Membrane.FalSDXL.GenerationParams do
   https://fal.ai/models/fal-ai/fast-lcm-diffusion/image-to-image/api#schema
   """
 
-  @enforce_keys [:prompt]
   defstruct [
-    :prompt,
     :image_url,
     :seed,
+    prompt: "",
     negative_prompt: "",
     image_size: "square",
-    model_name: "stabilityai/stable-diffusion-xl-base-1.0",
+    model_name: "runwayml/stable-diffusion-v1-5",
     num_inference_steps: 2,
-    guidance_scale: 1.0,
-    strength: 0.95,
+    guidance_scale: 1.5,
+    strength: 0.4,
     sync_mode: true,
     num_images: 1,
     enable_safety_checker: false,
@@ -23,22 +22,16 @@ defmodule Membrane.FalSDXL.GenerationParams do
     format: "jpeg"
   ]
 
-  @type image_size :: String.t() | %{width: pos_integer(), height: pos_integer()}
-
-  @type t :: %__MODULE__{
-          prompt: String.t(),
-          image_url: String.t(),
-          negative_prompt: String.t(),
-          image_size: image_size() | nil,
-          model_name: String.t(),
-          num_inference_steps: pos_integer(),
-          guidance_scale: float(),
-          strength: float(),
-          seed: pos_integer() | nil,
-          sync_mode: boolean(),
-          num_images: pos_integer(),
-          enable_safety_checker: boolean(),
-          expand_prompt: boolean(),
-          format: String.t()
-        }
+  @doc """
+  Convert a %GenerationParams{} struct to a Phoenix params style map,
+  with string keys and values for use with Phoenix.Component.to_form/1
+  """
+  def to_params_map(%__MODULE{} = struct) do
+    struct
+    |> Map.from_struct()
+    |> Enum.reject(fn {_key, value} -> is_nil(value) end)
+    |> Enum.reduce(%{}, fn {key, value}, acc ->
+      Map.put(acc, to_string(key), to_string(value))
+    end)
+  end
 end

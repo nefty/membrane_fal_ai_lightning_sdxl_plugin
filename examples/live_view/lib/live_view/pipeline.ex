@@ -1,6 +1,8 @@
 defmodule LiveView.Pipeline do
   use Membrane.Pipeline
 
+  alias Membrane.FalSDXL.GenerationParams
+
   @impl Membrane.Pipeline
   def handle_init(_ctx, opts) do
     spec =
@@ -15,7 +17,10 @@ defmodule LiveView.Pipeline do
         output_width: 512,
         format: :I420
       })
-      |> child(%Membrane.FalSDXL{api_key: opts[:api_key]})
+      |> child(:fal, %Membrane.FalSDXL{
+        api_key: opts[:api_key],
+        initial_generation_params: opts[:initial_generation_params]
+      })
       |> child(%Membrane.VP8.Encoder{g_lag_in_frames: 0})
       |> via_in(:input, options: [kind: :video])
       |> child(:webrtc_sink, %Membrane.WebRTC.Sink{
@@ -24,5 +29,14 @@ defmodule LiveView.Pipeline do
       })
 
     {[spec: spec], %{}}
+  end
+
+  @impl true
+  def handle_info(
+        {:update_generation_params, %GenerationParams{} = params},
+        _context,
+        state
+      ) do
+    {[notify_child: {:fal, {:update_generation_params, params}}], state}
   end
 end

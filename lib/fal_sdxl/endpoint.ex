@@ -6,14 +6,19 @@ defmodule Membrane.FalSDXL.Endpoint do
   alias Membrane.Buffer
   alias Membrane.FalSDXL.{Client, GenerationParams, JpegStream}
 
-  def_input_pad :input, flow_control: :auto, accepted_format: JpegStream
-
-  def_output_pad :output, flow_control: :push, accepted_format: JpegStream
-
   def_options api_key: [
                 type: :string,
                 description: "API key for Fal.ai"
+              ],
+              initial_generation_params: [
+                type: %GenerationParams{},
+                description: "Initial Fal generation params when starting playback",
+                default: %GenerationParams{}
               ]
+
+  def_input_pad :input, flow_control: :auto, accepted_format: JpegStream
+
+  def_output_pad :output, flow_control: :push, accepted_format: JpegStream
 
   defmodule State do
     defstruct [
@@ -54,12 +59,7 @@ defmodule Membrane.FalSDXL.Endpoint do
 
     state = %State{
       client: client,
-      generation_params: %GenerationParams{
-        prompt: "an elf with pointy ears wearing a green robe and hat, torch lit dungeon background, cinematic HD",
-        model_name: "runwayml/stable-diffusion-v1-5",
-        strength: 0.4,
-        guidance_scale: 1.0
-      },
+      generation_params: opts.initial_generation_params,
       processing?: false
     }
 
@@ -108,5 +108,14 @@ defmodule Membrane.FalSDXL.Endpoint do
     end
 
     {[{:terminate, :normal}], state}
+  end
+
+  @impl true
+  def handle_parent_notification(
+        {:update_generation_params, %GenerationParams{} = params},
+        _context,
+        state
+      ) do
+    {[], %{state | generation_params: params}}
   end
 end
