@@ -36,7 +36,10 @@ defmodule Membrane.FalSDXL.Auth do
         {:ok, token}
 
       {:ok, %{status: status, body: body}} ->
-        Logger.error("Membrane.FalSDXL.Auth: Token request failed (HTTP #{status}): #{inspect(body)}")
+        Logger.error(
+          "Membrane.FalSDXL.Auth: Token request failed (HTTP #{status}): #{inspect(body)}"
+        )
+
         {:error, "HTTP #{status}: #{inspect(body)}"}
 
       {:error, error} ->

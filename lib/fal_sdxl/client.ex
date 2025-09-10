@@ -28,7 +28,6 @@ defmodule Membrane.FalSDXL.Client do
           handle_initial_conn_failure: true
         ]
 
-
         WebSockex.start_link(
           url,
           __MODULE__,
@@ -86,7 +85,10 @@ defmodule Membrane.FalSDXL.Client do
         handle_message(decoded, state)
 
       {:error, error} ->
-        Logger.error("Membrane.FalSDXL.Client: Failed to decode binary message: #{inspect(error)}")
+        Logger.error(
+          "Membrane.FalSDXL.Client: Failed to decode binary message: #{inspect(error)}"
+        )
+
         {:ok, state}
     end
   end
@@ -127,7 +129,10 @@ defmodule Membrane.FalSDXL.Client do
 
   @impl WebSockex
   def handle_disconnect(%{reason: reason}, state) do
-    Logger.warning("Membrane.FalSDXL.Client: WebSocket disconnected: #{inspect(reason)}. Attempting to reconnect")
+    Logger.warning(
+      "Membrane.FalSDXL.Client: WebSocket disconnected: #{inspect(reason)}. Attempting to reconnect"
+    )
+
     if state.refresh_timer, do: :timer.cancel(state.refresh_timer)
     {:reconnect, %{state | refresh_timer: nil}}
   end
@@ -171,8 +176,11 @@ defmodule Membrane.FalSDXL.Client do
     case String.split(id, "/") do
       [_single] ->
         case Regex.run(~r/^([0-9]+)-([a-zA-Z0-9-]+)$/, id) do
-          [_hd, app_owner, app_id] -> "#{app_owner}/#{app_id}"
-          _invalid -> raise "Membrane.FalSDXL.Client: Invalid app id: #{id}. Must be in the format <appOwner>/<appId>"
+          [_hd, app_owner, app_id] ->
+            "#{app_owner}/#{app_id}"
+
+          _invalid ->
+            raise "Membrane.FalSDXL.Client: Invalid app id: #{id}. Must be in the format <appOwner>/<appId>"
         end
 
       parts when length(parts) > 1 ->

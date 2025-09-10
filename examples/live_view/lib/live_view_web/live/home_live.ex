@@ -69,24 +69,24 @@ defmodule LiveViewWeb.HomeLive do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash}>
-      <div class="flex flex-wrap justify-between gap-3">
+      <div class="flex flex-wrap justify-center gap-3">
         <Capture.live_render socket={@socket} capture_id="mediaCapture" />
 
         <Player.live_render socket={@socket} player_id="videoPlayer" class="w-lg h-lg" />
-      </div>
 
-      <.form for={@form} phx-change="update" class="max-w-lg">
-        <.input type="textarea" field={@form["prompt"]} label="Prompt" />
-        <.input
-          type="range"
-          field={@form["strength"]}
-          label="Strength"
-          min="0.05"
-          max="1.0"
-          step="0.05"
-          class="range w-full"
-        />
-      </.form>
+        <.form for={@form} phx-change="update" class="w-lg">
+          <.input type="textarea" field={@form["prompt"]} label="Prompt" />
+          <.input
+            type="range"
+            field={@form["strength"]}
+            label="Strength"
+            min="0.05"
+            max="1.0"
+            step="0.05"
+            class="range w-full"
+          />
+        </.form>
+      </div>
     </Layouts.app>
     """
   end
