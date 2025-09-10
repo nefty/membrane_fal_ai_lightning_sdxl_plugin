@@ -22,7 +22,7 @@ defmodule Membrane.FalSDXL.Auth do
       "token_expiration" => 120
     }
 
-    Logger.debug("Requesting token for app: #{inspect(app_id)}")
+    Logger.debug("Membrane.FalSDXL.Auth: Requesting token for app: #{inspect(app_id)}")
 
     case Req.post("#{@rest_api_url}/tokens/",
            json: body,
@@ -36,11 +36,11 @@ defmodule Membrane.FalSDXL.Auth do
         {:ok, token}
 
       {:ok, %{status: status, body: body}} ->
-        Logger.error("Token request failed (HTTP #{status}): #{inspect(body)}")
+        Logger.error("Membrane.FalSDXL.Auth: Token request failed (HTTP #{status}): #{inspect(body)}")
         {:error, "HTTP #{status}: #{inspect(body)}"}
 
       {:error, error} ->
-        Logger.error("Token request error: #{inspect(error)}")
+        Logger.error("Membrane.FalSDXL.Auth: Token request error: #{inspect(error)}")
         {:error, error}
     end
   end
