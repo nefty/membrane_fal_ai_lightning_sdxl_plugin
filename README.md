@@ -1,27 +1,47 @@
-# Membrane Template Plugin
+# Membrane Fal.ai Lightning SDXL Plugin
 
-[![Hex.pm](https://img.shields.io/hexpm/v/membrane_template_plugin.svg)](https://hex.pm/packages/membrane_template_plugin)
-[![API Docs](https://img.shields.io/badge/api-docs-yellow.svg?style=flat)](https://hexdocs.pm/membrane_template_plugin)
-[![CircleCI](https://circleci.com/gh/membraneframework/membrane_template_plugin.svg?style=svg)](https://circleci.com/gh/membraneframework/membrane_template_plugin)
-
-This repository contains a template for new plugins.
-
-Check out different branches for other flavors of this template.
-
-It's a part of the [Membrane Framework](https://membrane.stream).
+This is a Membrane plugin which styles video in real time using fast Stable Diffusion XL via Fal.ai.
 
 ## Installation
 
-The package can be installed by adding `membrane_template_plugin` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `membrane_fal_ai_lightning_sdxl_plugin` to your list of dependencies in `mix.exs`.
+It is not available in Hex and must be loaded from GitHub:
 
 ```elixir
 def deps do
   [
-    {:membrane_template_plugin, "~> 0.1.0"}
+    {:membrane_fal_ai_lightning_sdxl_plugin, github: "nefty/membrane_fal_ai_lightning_sdxl_plugin"}
   ]
 end
 ```
 
+Because it depends on [turbojpeg](https://hex.pm/packages/turbojpeg), it
+requires [libjpeg-turbo](https://libjpeg-turbo.org/) to be installed.
+
+### Arch Linux
+
+```shell
+sudo pacman -S libjpeg-turbo
+```
+
+### Ubuntu/Debian
+
+```shell
+sudo apt-get install libturbojpeg libturbojpeg0-dev
+```
+
+### OSX
+
+```shell
+brew install libjpeg-turbo
+```
+
 ## Usage
 
-TODO
+`Membrane.FalSDXL` is a Membrane Bin which takes raw video as input and outputs
+raw video. It first encodes a frame as JPEG.  Then, `Membrane.FalSDXL.Endpoint`
+sends the image along with a set of generation parameters (such as a prompt) to
+Fal.ai.  The Stable Diffusion transformed image is returned, and it is passed on
+to a JPEG decoder. Finally, a raw video frame is output from the Bin.
+
+See `examples/live_view` for a Phoenix LiveView example.

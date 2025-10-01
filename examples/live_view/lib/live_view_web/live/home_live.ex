@@ -74,7 +74,7 @@ defmodule LiveViewWeb.HomeLive do
 
         <Player.live_render socket={@socket} player_id="videoPlayer" class="w-lg h-lg" />
 
-        <.form for={@form} phx-change="update" class="w-lg">
+        <.form for={@form} phx-change="update" class="w-lg mt-6">
           <.input type="textarea" field={@form["prompt"]} label="Prompt" />
           <.input
             type="range"
