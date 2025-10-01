@@ -1,7 +1,7 @@
 # Membrane Fal.ai Lightning SDXL LiveView Example
 
 This demo shows how to use the plugin to transform live video over WebRTC in a
-Phoenix application.
+Phoenix application. This demo works best in Chrome or Chromium-based browsers.
 
 Note `assets/js/capture.js`. This is the same hook from
 `membrane_webrtc_plugin`, but with the addition of this section:
